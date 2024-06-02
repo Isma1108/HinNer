@@ -28,7 +28,6 @@ expr : aplicacio
      ;
 
 
-
 aplicacio : aplicacio '(' expr ')'    # aplRec
 					| aplicacio expr           	# aplRec
 					|'(' abstraccio ')' expr  	# aplAbs
