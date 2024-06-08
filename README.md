@@ -2,12 +2,12 @@
 
 Aquest petit projecte es tracta de la pràctica de GEI-LP (edició 2023-2024 Q2). Amb l'ajuda de 
 Python i antlr4, l'objectiu és crear un analitzador de tipus que sigui capaç de fer inferència de 
-tipus.
+tipus d'un subconjunt d'expressions utilitzant l'algorisme de Hindley-Milner.
 
 ## Instalació de dependències
 
 La dependència principal es python3, i per certes característiques concretes que s'utilitzen, com per
-exemple l'operador | pels tipus algebraitcs o la sentència match, fa falta una versió igual o superior
+exemple l'operador | pels tipus algebraics o la sentència match, fa falta una versió igual o superior
 a python3.10. Es pot executar també en un entorn virtual com pot ser venv o també utilitzant pyenv per
 cambiar la versió de python.
 
