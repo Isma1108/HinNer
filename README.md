@@ -4,11 +4,82 @@ Aquest petit projecte es tracta de la pràctica de GEI-LP (edició 2023-2024 Q2)
 Python i antlr4, l'objectiu és crear un analitzador de tipus que sigui capaç de fer inferència de 
 tipus.
 
+## Instalació de dependències
 
-### Fet amb:
+La dependència principal es python3, i per certes característiques concretes que s'utilitzen, com per
+exemple l'operador | pels tipus algebraitcs o la sentència match, fa falta una versió igual o superior
+a python3.10. Es pot executar també en un entorn virtual com pot ser venv o també utilitzant pyenv per
+cambiar la versió de python.
 
-* [![Python][Python.org]][Python-utl]
+Després hi ha algunes dependències específiques:
 
+- Streamlit
+  ```sh
+  pip install streamlit
+  ```
+- Graphviz
+  ```sh
+  pip install graphviz
+  ```
+- Pandas
+  ```sh
+  pip install pandas
+  ```
+- Dataclasses
+  ```sh
+  pip install dataclasses
+  ```
+- Antlr4: possiblement cal instalar una versió específica del runtime que sigui compatible amb la versió
+          concreta de antlr4 que s'instal·la.
+  ```sh
+  pip install antlr4-tools
+  pip install antlr4-python3-runtime
+  ```
+
+## Ús
+
+Primerament, per poder tenir el codi dels visitors base, cal executar a la terminal:
+  ```sh
+  antlr4 -Dlanguage=Python3 -no-listener -visitor hm.g4
+  ```
+Això crearà els visitors, i després únicament caldrà executar:
+  ```sh
+  streamlit run hm.py
+  ```
+sempre que es vulgui executar el programa. Streamlit obrirà en un navegador una finestra en local,
+on ja es pot probar el HinNer. La interfície és senzilla, tenim un títol, un area de text per escriure els tipus,
+un text input per escriure l'expressió, i un botó de Fer. 
+
+### Com escriure els tipus
+Per escriure els tipus, cal seguir la següent sintaxi: clau :: tipus. clau pot ser per exemple (+), i tipus
+podria ser N o N -> N. A més, el programa accepta tipus genèrics, com per exemple x -> x -> x
+
+Llavors, exemples de tipus serien (un per línia):
+
+    2 :: N
+    (+) :: N -> N -> N
+    1 :: P
+    (*) :: x -> x -> x
+
+
+### Com escriure l'expressió
+
+
+
+
+
+
+
+
+
+
+### Jocs de proves
+
+
+## Com està implementat
+
+
+## Possibles millores
 
 
 Important:
