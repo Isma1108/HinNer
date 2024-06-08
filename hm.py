@@ -52,14 +52,11 @@ needToTraverse = False
 
 
 class SymbolsTableVisitor(hmVisitor):
-    def __init__(self, table):
-        super().__init__()
-        self.table = table
-
     def visitTypeDef(self, ctx:hmParser.TypeDefContext):
         leftType = ctx.leftType().getText()
         ty = self.visit(ctx.ty())
-        self.table[leftType] = ty
+        st.session_state.symTable[leftType] = ty
+        st.session_state.symTableToShow[leftType] = showType(ty)
 
     def visitSingleType(self, ctx:hmParser.SingleTypeContext):
         if ctx.tipus().CNT():
@@ -246,7 +243,12 @@ def displaySemanticTree(t: Tree):
     def _display(node, graph, parent_id = None):
         if isinstance(node, Node):
             node_id = str(id(node))
-            graph.node(node_id, label=node.val + "\n" + showType(node.nodeTy))
+            value = node.val
+            if value in st.session_state.symTableToShow:
+                graph.node(node_id, label=value + "\n" + st.session_state.symTableToShow[value])
+            else:
+                graph.node(node_id, label=value + "\n" + showType(node.nodeTy))
+
 
             if parent_id is not None:
                 graph.edge(parent_id, node_id)
@@ -269,14 +271,14 @@ def updateSymbolsTable(stream):
 
     if "symTable" not in st.session_state:
         st.session_state.symTable = {}
+        st.session_state.symTableToShow = {}
 
-    symVisitor = SymbolsTableVisitor(st.session_state.symTable)
+    symVisitor = SymbolsTableVisitor()
 
     # We visit the tree to update the symTable
     symVisitor.visit(tree)
 
-    symTableToShow = {k: showType(v) for k, v in st.session_state.symTable.items()}
-    df = pd.DataFrame.from_dict(symTableToShow, orient='index', columns=['Tipus'])
+    df = pd.DataFrame.from_dict(st.session_state.symTableToShow, orient='index', columns=['Tipus'])
     st.dataframe(df, width=400)
 
 
@@ -310,7 +312,7 @@ def typeCheck(stream):
         travels += 1
 
     if allCorrect:
-        #st.write(f"Inferència obtinguda amb {travels} recorreguts")
+        st.write(f"Inferència obtinguda amb {travels-1} recorregut/s")
         displaySemanticTree(semantic_tree)
         varTypesToShow = {k: showType(v) for k, v in varTypes.items()}
         st.subheader("Taula de variables")
@@ -319,17 +321,19 @@ def typeCheck(stream):
 
 
 def main():
+    global localSymTable
     st.title("HinNer Type Analyzer")
     tipusText = st.text_area("Tipus:")
     text = st.text_input("Expressió:")
 
     if (st.button("Fer")):
+        localSymTable = {}
+        varTypes = {}
         st.subheader("Taula de símbols")
         updateSymbolsTable(InputStream(tipusText))
-        st.subheader("Arbre semàntic")
-        typeCheck(InputStream(text))
-
+        if (text.strip() != ""):
+            st.subheader("Arbre semàntic")
+            typeCheck(InputStream(text))
 
 if __name__ == "__main__":
     main()
-
