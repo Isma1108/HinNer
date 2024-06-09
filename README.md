@@ -2,7 +2,8 @@
 
 Aquest petit projecte es tracta de la pràctica de GEI-LP (edició 2023-2024 Q2). Amb l'ajuda de 
 Python i antlr4, l'objectiu és crear un analitzador de tipus que sigui capaç de fer inferència de 
-tipus d'un subconjunt d'expressions utilitzant l'algorisme de Hindley-Milner.
+tipus d'un subconjunt d'expressions utilitzant l'algorisme de Hindley-Milner. El codi python segueix
+les regles d'estil PEP8.
 
 ## Instalació de dependències
 
@@ -28,6 +29,10 @@ Després hi ha algunes dependències específiques:
 - Dataclasses
   ```sh
   pip install dataclasses
+  ```
+- Future
+  ```sh
+  pip install future
   ```
 - Antlr4: possiblement cal instalar una versió específica del runtime que sigui compatible amb la versió
           concreta de antlr4 que s'instal·la.
@@ -61,7 +66,7 @@ Llavors, exemples de tipus serien (un per línia):
     1 :: P
     (*) :: x -> x -> x
 
-Els errors relacionats amb posar coses que no són tipus al text area dels tipus no esta gestionats, la pràctica
+Els errors relacionats amb posar coses que no són tipus al text area dels tipus no estan gestionats, la pràctica
 dona a entendre que la detecció d'errors de sintaxi és només per les expressions.
 
 ### Com escriure l'expressió
@@ -105,6 +110,8 @@ Expressió:
 
 Aparentment pot semblar que no és possible inferir-ho tot, però sí que ho és. Es pot probar aplicant l'algorisme de Milner a mà.
 
+Finalment, cal destacar que si no s'especifica cap tipus, el HinNer és capaç d'inferir deixant les variables sense definir.
+
 
 ## Com està implementat
 La gramàtica antlr està implementada amb l'objectiu que els visitors del codi python siguin curts, és a dir, que el pes recaigui en
@@ -140,6 +147,9 @@ Caldria perfeccionar el fet de mantenir tipus definits per l'usurai entre reexec
 del session_state de streamlit, a vegades hi ha certs problemes. Si en algún moment apareix algun error relacionat amb que algun atribut
 és NoneType, és per problemes amb el session_state. En aquell cas, reiniciem la pàgina i redefinim tipus i expressió. He preferit dedicar
 temps a l'algorisme que no pas amb barallar-me amb streamlit, que no crec que sigui l'objectiu de la pràctica.
+
+Una altra cosa a fer seria afegir algún botó per buidar la taula de tipus. Actualment si s'ha de buidar cal reiniciar la pàgina,
+en Gerard Escudero em va dir que amb això era suficient.
 
 
 
